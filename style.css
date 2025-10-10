@@ -1,0 +1,128 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(to bottom right, #ff9a9e, #fad0c4);
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  max-width: 90%;
+}
+
+h1 {
+  font-size: 2.8em;
+  margin-bottom: 0.3em;
+}
+
+h2 {
+  font-size: 2em;
+  margin-bottom: 1.5em;
+}
+
+.text {
+  font-size: 1.3em;
+  margin-top: 1.5em;
+  animation: fadeIn 3s ease-in-out infinite alternate;
+}
+
+/* ---------- SLIDER ---------- */
+.slider {
+  width: 80vw;
+  height: 60vh;
+  max-width: 900px;
+  max-height: 600px;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+  margin: 0 auto;
+  position: relative;
+}
+
+.slides {
+  display: flex;
+  width: calc(100% * 6); /* duplicamos las imágenes para bucle continuo */
+  height: 100%;
+  animation: slide 26s linear infinite; /* más lento y fluido */
+}
+
+.slides img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Animación del slider: movimiento continuo sin hueco */
+@keyframes slide {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- CORAZONES ANIMADOS ---------- */
+.hearts {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.heart {
+  position: absolute;
+  bottom: 0;
+  width: 25px;
+  height: 25px;
+  background-color: rgba(255, 0, 102, 0.7);
+  transform: rotate(45deg);
+  animation: floatUp linear forwards;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background-color: rgba(255, 0, 102, 0.7);
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -12px;
+  left: 0;
+}
+
+.heart::after {
+  left: -12px;
+  top: 0;
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(0) rotate(45deg);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100vh) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
