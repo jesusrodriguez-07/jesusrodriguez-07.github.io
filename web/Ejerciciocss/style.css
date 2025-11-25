@@ -1,0 +1,49 @@
+html {
+    background-color: #B5F4FF;
+}
+
+h1 {
+    font-family: Helvetica;
+}
+
+header {
+    background-color: #007bff;
+}
+
+nav a{
+    color: #ffffff;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: brown;
+}
+
+#contenido {
+    padding: 5%;
+}
+
+#contenido h2 {
+    font-size: 22px;
+}
+
+#contenido p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    text-align: justify;
+    color:rgb(108, 10, 236);
+}
+
+#contenido img {
+    max-width: 100%;
+    height: auto;
+    width: 140px;
+    display: block;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1px;
+}
