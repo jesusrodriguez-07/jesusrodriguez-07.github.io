@@ -1,0 +1,39 @@
+div {
+    width: 200px;
+    height: 200px;
+    background-image: url(aguita.jpg);
+    background-size: 50px 50px;
+    border: 2px solid;
+}
+
+#div1 {
+    background-color: aquamarine;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-color: red;
+}
+
+#div2 {
+    background-color: rgb(150, 127, 255);
+    background-position: bottom;
+    background-repeat: repeat-x;
+    border-color: blue;
+}
+
+#div3 {
+    background-color: rgb(255, 127, 255);
+    background-position: right;
+    background-repeat: repeat-y;
+    border-color: green;
+}
+
+#t2 {
+    border: 1px solid rgb(243, 16, 16);
+    width: 50%;
+    margin: auto
+}
+
+#t2 td {
+    border: 1px solid black;
+    padding: 10px;
+}

@@ -24,6 +24,18 @@ div {
     height: 200px;
 }
 
+#div2 {
+    margin: 400px;
+    width: 400px;
+    height: 400px;
+    background-color: red;
+    background-image: url(../Sahur2.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 300px;
+    border: 2px solid black;
+}
+
 #bloquetotal {
     display: flex;
 }
