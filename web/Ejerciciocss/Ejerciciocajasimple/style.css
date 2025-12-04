@@ -1,0 +1,25 @@
+#caja {
+    max-width: 500px;
+    background-color: lightcoral;
+    border: 2px solid black;
+    padding: 10px;
+    margin: 20px;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background-color: lightgreen;
+    border: 2px double darkred;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+}
+
+.item {
+    background-color: lightyellow;
+    width: 100px;
+    height: 100px;
+    border: 1px solid blue;
+}
