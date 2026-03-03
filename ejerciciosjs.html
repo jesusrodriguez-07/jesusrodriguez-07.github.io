@@ -1,0 +1,58 @@
+<script>
+    let ciudad = prompt("¿Cuál es tu ciudad?");
+    alert("¡Hola! Bienvenido a mi página web. Veo que eres de "
+        + ciudad + ". ¡Espero que disfrutes explorando mi sitio y aprendiendo más sobre mí!");
+    const país="España";
+    console.log("Vivo en " + país + " " + ciudad);
+
+    let precio = 19.99;
+    const IVA = 0.21;
+    let precioConIVA = precio * (1 + IVA);
+    console.log ("El precio de " + precio + " con IVA es " + precioConIVA);
+
+    let edad = 27;
+    let mul=edad*365;
+    const vida=edad*mul;
+    console.log("He vivido " + vida + " días");
+
+    let nombre = prompt("¿Cuál es tu nombre?");
+    alert("¡Hola, Bienvenido a mi curso de JS" + nombre);
+
+    // Suma de dos números
+    let numero1 = parseInt(prompt("Introduce el primer número:"));
+    let numero2 = parseInt(prompt("Introduce el segundo número:"));
+    let suma = numero1 + numero2;
+    alert ("La suma de " + numero1 + " y " + numero2 + " es " + suma);
+
+    // Mayoria de edad
+    let miEdad = Number(prompt("¿Cuál es tu edad?"));
+    if (miEdad >= 18) {
+        let mayoriaDeEdad = true;
+         alert("¿Eres mayor de edad? " + mayoriaDeEdad);
+    } else {
+        let mayoriaDeEdad = false;
+         alert("¿Eres mayor de edad? " + mayoriaDeEdad);
+    }
+
+    // Nombre de invitado
+    let invitado = prompt("¿Cuál es el nombre del invitado?");
+    if (invitado === "Admin") {
+        alert("Acceso total.");
+    } else {
+        alert("Acceso denegado.");
+    }
+
+    // numeros impares del 1 al numero introducido con una condicion para que sea positivo
+    do {
+        let numero = parseInt(prompt("Introduce un número positivo:"));
+        if (numero > 0) {
+            for (let i = 1; i <= numero; i++) {
+                if (i % 2 !== 0) {
+                    console.log(i);
+                }
+            }
+        } else {
+            alert("Por favor, introduce un número positivo.");
+        }
+    } while (numero > 0);
+</script> 
