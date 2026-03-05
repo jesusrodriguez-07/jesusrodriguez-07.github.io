@@ -1,0 +1,73 @@
+<html>
+<head>
+    <title>DOM</title>
+</head>
+<body>
+    <!--pon un texto en español explicando DOM aparte de tener varias secciones donde expliques lo que quieras-->
+    <h1 id="titulo">Hola</h1>
+</body>
+<script>
+    // Ejemplo de manipulación de elementos
+    const titulo=document.getElementById("titulo");
+    titulo.style.color = "blue";
+    // Quiero tener un for para imprimir headers pero cada vez mas pequeños pero usando la etiqueta h1, h2, h3, h4, h5
+    for (let i = 0; i < 5; i++) {
+        const header = document.createElement("h" + (i + 1));
+        header.textContent = "Header " + (i + 1);
+        document.body.appendChild(header);
+    }
+    
+    /*let BotonRojo = document.createElement("button");
+    BotonRojo.textContent = "Botón rojo";
+    BotonRojo.style.backgroundColor = "red";
+    document.body.appendChild(BotonRojo);
+    BotonRojo.addEventListener("click", function() {
+       titulo.style.color = "red";
+    });
+
+    let BotonAzul = document.createElement("button");
+    BotonAzul.textContent = "Botón azul";
+    BotonAzul.style.backgroundColor = "blue";
+    BotonAzul.style.color = "white";
+    document.body.appendChild(BotonAzul);
+    BotonAzul.addEventListener("click", function() {
+        titulo.style.color = "blue";
+    });
+
+    let BotonVerde = document.createElement("button");
+    BotonVerde.textContent = "Botón verde";
+    BotonVerde.style.backgroundColor = "green";
+    document.body.appendChild(BotonVerde);
+    BotonVerde.addEventListener("click", function() {
+        titulo.style.color = "green";
+    });
+
+    let BotonAmarillo = document.createElement("button");
+    BotonAmarillo.textContent = "Botón amarillo";
+    BotonAmarillo.style.backgroundColor = "yellow";
+    BotonAmarillo.style.color = "";
+    document.body.appendChild(BotonAmarillo);
+    BotonAmarillo.addEventListener("click", function() {
+        titulo.style.color = "yellow";
+    });*/
+
+    function creaBoton(color) {
+        let boton = document.createElement("button");
+        boton.textContent = "Botón " + color;
+        boton.style.backgroundColor = color;
+        if (color === "yellow") {
+            boton.style.color = "";
+        } else {
+            boton.style.color = "white";
+        }
+        document.body.appendChild(boton);
+        boton.addEventListener("click", function() {
+            titulo.style.color = color;
+        });
+    }
+    creaBoton("red");
+    creaBoton("blue");
+    creaBoton("green");
+    creaBoton("yellow");
+    </script>
+</html>

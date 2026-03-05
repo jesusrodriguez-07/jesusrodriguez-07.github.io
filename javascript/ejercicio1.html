@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ejercicio 1</title>
+    </head>
+    <body>
+        <input type="text" id="Nombre" placeholder="Escribe tu nombre">
+        <input type="number" id="Edad" placeholder="0">
+        <br>
+        <input type="number" id="Numero1">
+        <input type="number" id="Numero2"> 
+    </body>
+    <script>
+        let nombre = document.getElementById("Nombre");
+        let edad = document.getElementById("Edad");
+        let numero1 = document.getElementById("Numero1");
+        let numero2 = document.getElementById("Numero2");
+
+        function suma() {
+            let resultado = parseInt(numero1.value) + parseInt(numero2.value);
+            alert("La suma de " + numero1.value + " y " + numero2.value + " es " + resultado);
+        }
+
+        numero2.addEventListener("input", suma(Numero1, Numero2));
+    </script>
+</html>
