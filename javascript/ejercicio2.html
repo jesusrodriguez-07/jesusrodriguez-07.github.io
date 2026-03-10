@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>
+            Ejercicio 2
+        </h1>
+        <form>
+            <label for="Nombre">Nombre:</label>
+            <input type="text" id="nombre" value="...">
+            <label for="num">Par o impar:</label>
+            <input type="number" id="numero"><br>
+            <label for="edad">Edad:</label>
+            <input type="number" id="edad" value="18">
+            <br><input type="submit" value="Enviar">
+        </form>
+
+        <script>
+            // Verificar que un numero sea par
+            let num = Number(document.getElementById('numero').value);
+            if (num % 2 === 0) {
+                alert(num + " es par");
+            } else {
+                alert(num + " es impar");
+            }
+
+            // Verificar si es mayor de edad 
+        </script>
+    </body>
+</html>
