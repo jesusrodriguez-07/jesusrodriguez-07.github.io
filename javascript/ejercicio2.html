@@ -12,21 +12,23 @@
         <form>
             <label for="Nombre">Nombre:</label>
             <input type="text" id="nombre" value="...">
-            <label for="num">Par o impar:</label>
-            <input type="number" id="numero"><br>
+            <label for="number">Par o impar:</label>
+            <input type="number" id="number"><br>
             <label for="edad">Edad:</label>
             <input type="number" id="edad" value="18">
-            <br><input type="submit" value="Enviar">
+            <br><input type="submit" value="Enviar" onclick="verificar()">
         </form>
 
         <script>
+            function verificar() {
             // Verificar que un numero sea par
-            let num = Number(document.getElementById('numero').value);
+            let num = Number(document.getElementById('number').value);
             if (num % 2 === 0) {
                 alert(num + " es par");
             } else {
                 alert(num + " es impar");
             }
+        }
 
             // Verificar si es mayor de edad 
         </script>
