@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="moderno"></td>
+                </tr>
+                <tr id="rustico"></tr>
+            </tbody>
+        </table>
+        <div id="Muestreo">Hola</div>
+        <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" 
+        crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function() {
+            console.log("Mensaje: " + {nombre: "Alberto", apellidos:"Pingi", edad: "19", ciudad: "Sevilla"})
+            let obj = {nombre: "Alberto", apellidos:"Pingi", edad: "19", ciudad: "Sevilla"};
+            let objserializado = serializar(obj);
+            console.log("Objeto serializado: " + objserializado);
+            });
+
+            $("#Muestreo").html(objs.nombre);
+
+            function mostrar(obj) {
+                console.log("Objeto: " + obj.nombre);
+            }
+
+            function serializar(obj) {
+                return JSON.stringify(obj)
+            }
+
+            function deserializar(obj) {
+                return JSON.parse(objJson)
+            }
+
+            function enviar(obj) {
+                console.log("serializado: " + obj.nombre);
+                return serializar(obj);
+            }
+
+            function recibir(json_serializado) {
+                console.log("Deserializado: " + json_serializado);
+                return deserializar(json_serializado);
+            }
+        </script>
+    </body>
+</html>

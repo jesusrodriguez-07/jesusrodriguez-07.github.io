@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practicando JSON</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Edad</th>
+                <th>Ciudad</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpo-tabla">
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function () {
+            // Hacemos la llamada al JSON
+            $.getJSON("datos.json", function (data) {
+                // Montamos la fila entera con los datos del JSON
+                let filaHTML = "<tr>" +
+                    "<td>" + data.nombre + "</td>" +
+                    "<td>" + data.apellidos + "</td>" +
+                    "<td>" + data.edad + "</td>" +
+                    "<td>" + data.ciudad + "</td>" +
+                               "</tr>";
+                
+                // Añadimos esa fila a nuestra tabla
+                $("#cuerpo-tabla").append(filaHTML);
+            });
+        });          
+        
+        // --- Tus funciones extra corregidas ---
+
+        function serializar(obj) {
+            return JSON.stringify(obj);
+        }
+
+        function deserializar(objJson) {
+            return JSON.parse(objJson); // 3. Corregido: objJson en lugar de obj
+        }
+
+        function enviar(obj) {
+            return serializar(obj);
+        }
+
+        function recibir(json_serializado) {
+            return deserializar(json_serializado);
+        }
+    </script>
+</body>
+</html>
