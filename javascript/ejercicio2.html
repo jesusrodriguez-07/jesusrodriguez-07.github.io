@@ -16,7 +16,33 @@
             <input type="number" id="number"><br>
             <label for="edad">Edad:</label>
             <input type="number" id="edad" value="18">
-            <br><input type="submit" value="Enviar" onclick="verificar()">
+            <br><input type="button" value="Enviar" onclick="verificar()">
+            <br>
+            <label>Numero inicial(contar): </label>
+            <input type="number" id="numInicial1" value="1">
+            <br>
+            <label>Numero final(contar):</label>
+            <input type="number" id="numFinal1" value="10">
+            <br>
+            <br>
+            <label>Numero inicial(pares): </label>
+            <input type="number" id="numInicial2" value="1">
+            <br>
+            <label>Numero final(pares):</label>
+            <input type="number" id="numFinal2" value="10">
+            <br>
+            <br>
+            <label>Numero inicial(suma): </label>
+            <input type="number" id="numInicial3" value="1">
+            <br>
+            <label>Numero final(suma):</label>
+            <input type="number" id="numFinal3" value="10">
+            <br>
+            <input type="button" value="bucles" onclick="bucles()">
+            <p id="1a10"></p>
+            <p id="pares"></p>
+            <p id="sumar"></p>
+
         </form>
 
         <script>
@@ -28,13 +54,52 @@
             } else {
                 alert(num + " es impar");
             }
-        }
 
             // Verificar si es mayor de edad 
-            if (Number(document.getElementById('edad').value) >= 18) {
+            let edad = Number(document.getElementById('edad').value)
+             if (edad >= 18) {
                 alert("Eres mayor de edad");
             } else {
                 alert("Eres menor de edad");
+            }
+        }
+
+            function bucles() {
+                // Borrado de los valores anteriores
+                document.getElementById('1a10').innerHTML = "";
+                document.getElementById('pares').innerHTML = "";
+                document.getElementById('sumar').innerHTML = "";
+
+
+
+                // Bucle de los numeros del 1 al 10
+                let numInicial1 = Number(document.getElementById('numInicial1').value);
+                let numFinal1 = Number(document.getElementById('numFinal1').value);
+                for (let i = numInicial1; i <= numFinal1; i++) {
+                    let num = i;
+                    document.getElementById('1a10').innerHTML += num + " ";
+                }
+
+                // Bucle de los numeros pares del 1 al 10
+                let numInicial2 = Number(document.getElementById('numInicial2').value);
+                let numFinal2 = Number(document.getElementById('numFinal2').value);
+                for (let i = numInicial2; i <= numFinal2; i++) {
+                    if (i % 2 == 0) {
+                        let par = i;
+                        document.getElementById('pares').innerHTML += par + " ";
+                    }
+                }
+                
+                
+                // Numeros del 1 al 100
+                let suma = 0;
+                let numInicial3 = Number(document.getElementById('numInicial3').value);
+                let numFinal3 = Number(document.getElementById('numFinal3').value);
+                for (let i = numInicial3; i <= numFinal3; i++) {
+                    
+                    suma = suma + i;
+                    document.getElementById('sumar').innerHTML = suma
+                }
             }
         </script>
     </body>
