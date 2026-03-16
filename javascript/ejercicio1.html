@@ -9,12 +9,13 @@
         <input type="text" id="Nombre" placeholder="Escribe tu nombre">
         <input type="number" id="Edad" placeholder="0">
         <br>
-        <input type="submit" value="Enviar">
+        <input type="button" value="Enviar" onclick="ejercicio()">
     </body>
     <script>
-        let nombre = document.getElementById("Nombre");
-        let edad = document.getElementById("Edad");
-        alert("Hola " + nombre.value + ", tienes " + edad.value + " años."); 
-        numero2.addEventListener("input", suma);
+        function ejercicio() {
+            let nombre = document.getElementById("Nombre").value;
+            let edad = document.getElementById("Edad").value;
+            alert("Mi nombre es " + nombre + " y tengo " + edad + " años.");
+        }
     </script>
 </html>

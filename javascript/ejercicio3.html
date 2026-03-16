@@ -6,19 +6,50 @@
     <title>Document</title>
 </head>
 <body>
-    <p>
-        Este es el ejercicio 3, que se corresponde con el ejercicio 2 pero con un JSON en lugar de un objeto literal. Para ello, he creado un archivo datos.json con el siguiente contenido:
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre">
+    <input type="button" value="Enviar" onclick="saludar()">
+    <br>
+    <input type="button" value="Calcular Promedio" onclick="promedio()">
+    <br>
+    <br>
+    <input type="button" value="Ver si es positivo o negativo" onclick="Numerar()">
+    <br>
+    <br>
+    <input type="button" value="Ver si el año es bisiesto" onclick="bisiesto()">
 
-        {
-            "nombre": "Juan",
-            "apellidos": "Pérez",
-            "edad": 30,
-            "ciudad": "Madrid"
+    <script>
+        function saludar() {
+            let nombre = document.getElementById('nombre').value;
+            alert("Hola " + nombre);
         }
 
-        Luego, en el código JavaScript, he hecho una llamada a ese JSON utilizando jQuery y he montado la fila de la tabla con los datos obtenidos. Además, he corregido las funciones de serialización y deserialización para que funcionen correctamente.
+        function promedio() {
+            let num1 = Number(prompt("Ingrese el primer numero"));
+            let num2 = Number(prompt("Ingrese el segundo numero"));
+            let promedio = (num1 + num2) / 2;
+            alert("El promedio es: " + promedio);
+        }
 
-        Puedes ver el código completo en el archivo ejercicio3.html.
-    </p>
+        function Numerar() {
+            let num = Number(prompt("Ingrese un numero"));
+            if (num < 0) {
+                alert("El número introducido es negativo")
+            } else if (num > 0) {
+                alert("El número introducido es positivo")
+            } else {
+                alert("El número es cero")
+            }
+        }
+
+        function bisiesto() {
+            let año = Number(prompt("Ingrese un año para ver si es bisiesto."));
+            if (año % 4 === 0 && año % 100 !== 0 || año % 400 === 0) {
+                alert("El año es bisiesto")
+            } else {
+                alert("El año no es bisiesto mi loco")
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label>Nums</label>
+    <input type="button" value="Mostrar nums" onclick="arrays()">
+    <br>
+    <input type="button" value="Mostrar el numero mayor" onclick="Mayor()">
+    <p id="nums"></p>
+
+    <input type="button" value="Mostrar propiedades de la persona" onclick="mostrarPropiedades()">
+
+    <script>
+        function arrays() {
+            let nums = [1, 2, 3, 4, 5]
+            for (let i = 0; i < nums.length;i++) {
+                alert(nums[i])
+                document.getElementById('nums').innerHTML += nums[i]
+            }
+        }
+
+        function Mayor() {
+            let nums = [1, 2, 3, 4, 5]
+            let mayor = 0
+            for (let i = 1; i < nums.length; i++) {
+                if (nums[i] > mayor) {
+                    mayor = nums[i]
+                }
+            }
+            alert("El número mayor es: " + mayor)
+        }
+
+        const persona = {
+            nombre: "Juan",
+            edad: 30,
+            ciudad: "Madrid"
+        }
+        console.log(persona.nombre)
+        persona.propiedad = "Valor"
+        delete persona.ciudad
+
+        function mostrarPropiedades() {
+            for (let i in persona) {
+                console.log(i + ": " + persona[i])
+            }
+        }
+    </script>
+</body>
+</html>
