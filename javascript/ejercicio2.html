@@ -4,6 +4,110 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
+        <style>
+    /* 1. Estilo general del cuerpo */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px;
+        color: #333;
+    }
+
+    h1 {
+        color: #2c3e50;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+    }
+
+    /* 2. El contenedor del formulario */
+    form {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 450px;
+    }
+
+    /* 3. Etiquetas e Inputs */
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+        font-size: 0.9em;
+        color: #555;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        box-sizing: border-box; /* Para que el padding no ensanche el input */
+        outline: none;
+        transition: border-color 0.3s;
+    }
+
+    input:focus {
+        border-color: #3498db;
+    }
+
+    /* 4. Botones */
+    input[type="button"] {
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: background 0.3s, transform 0.1s;
+    }
+
+    /* Botón Verificar (Verde) */
+    input[value="Enviar"] {
+        background-color: #27ae60;
+        color: white;
+    }
+
+    input[value="Enviar"]:hover {
+        background-color: #219150;
+    }
+
+    /* Botón Bucles (Azul) */
+    input[value="bucles"] {
+        background-color: #3498db;
+        color: white;
+    }
+
+    input[value="bucles"]:hover {
+        background-color: #2980b9;
+    }
+
+    input:active {
+        transform: scale(0.98);
+    }
+
+    /* 5. Zona de Resultados */
+    p {
+        background: #eef7fd;
+        padding: 10px;
+        border-left: 4px solid #3498db;
+        border-radius: 4px;
+        min-height: 1.2em;
+        word-wrap: break-word; /* Para que los números largos no se salgan */
+    }
+
+    #pares { border-left-color: #f1c40f; background-color: #fffdf0; }
+    #sumar { border-left-color: #e74c3c; background-color: #fdf2f2; font-weight: bold; }
+
+</style>
     </head>
     <body>
         <h1>
