@@ -7,6 +7,17 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
+    <form>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" value="...">
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" value="...">
+        <label for="edad">Edad:</label>
+        <input type="number" id="edad" value="18">
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad" value="...">
+        <input type="button"id="btnEnvio" value="Enviar">
+    </form>
     <table border="1">
         <thead>
             <tr>
@@ -53,6 +64,19 @@
 
         function recibir(json_serializado) {
             return deserializar(json_serializado);
+        }
+
+        function inputDatos() {
+            let obj = {
+                nombre: document.getElementById('nombre').value,
+                apellidos: document.getElementById('apellidos').value,
+                edad: document.getElementById('edad').value,
+                ciudad: document.getElementById('ciudad').value
+            };
+            let json_serializado = enviar(obj);
+            console.log("JSON serializado: " + json_serializado);
+            let obj_deserializado = recibir(json_serializado);
+            console.log("Objeto deserializado: ", obj_deserializado);
         }
     </script>
 </body>

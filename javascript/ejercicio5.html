@@ -4,8 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+    }
+    input[type="button"] {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        color: azure;
+        background-color: #007BFF;
+        border: solid 1px #007BFF;
+        border-left: solid 2px #ffbc06;
+    }
+    </style>
 </head>
 <body>
-    <p></p>
+    <h1>Número random</h1>
+    <input type="number" id="num" placeholder="Escribe un número">
+    <input type="button" value="Comprobar" onclick="puntuacion()"> 
+    <br><br>
+    <p>Partidas Jugadas: </p>
+    <p id="partidas"></p>
+    
+    <p id="mensaje"></p> <script>
+        // --- LO QUE AÑADIMOS: Variables fuera para que no se reseteen ---
+        let numeroSecreto = Math.floor(Math.random() * 100) + 1;
+        let puntos = 10; 
+        let totalUsuario = 0;
+        let partidasJugadas = 0;
+        console.log("Secreto: " + numeroSecreto); // Para tus pruebas
+
+        function numRandom() {
+            return Math.floor(Math.random() * 100) + 1;
+        }
+
+        function puntuacion() {
+            // Referenciamos tu ID 'num'
+            let numUser = Number(document.getElementById('num').value);
+            
+            if (puntos > 0) {
+                if (numUser == numeroSecreto) {
+                    totalUsuario = puntos;
+                    alert("¡Felicidades! Tu puntuación total es: " + totalUsuario);
+                    // Opcional: reiniciar juego aquí
+                    finalizarPartida();
+                } else {
+                    puntos--; // Bajamos un punto por fallo
+                    
+                    alert("Número incorrecto, pierdes un punto. Puntos restantes: " + puntos);
+                    
+                    if (numUser < numeroSecreto) {
+                        alert("El número es mayor que " + numUser);
+                    } else {
+                        alert("El número es menor que " + numUser);
+                    }
+
+                    if (puntos === 0) {
+                        alert("¡Has perdido! No te quedan puntos. El número era: " + numeroSecreto);
+                        finalizarPartida();
+                    }
+                }
+            } else {
+                alert("El juego ha terminado.");
+                finalizarPartida();
+            }
+        }
+
+        function finalizarPartida() {
+            partidasJugadas++; // Aumentamos el contador
+            document.getElementById('partidas').innerHTML = partidasJugadas; // Actualizamos el HTML
+            
+            // Reiniciamos valores para la siguiente partida sin refrescar la página
+            puntos = 10;
+            numeroSecreto = numRandom();
+            document.getElementById('num').value = "";
+            console.log("Nuevo secreto: " + numeroSecreto);
+        }
+    </script>
 </body>
 </html>
