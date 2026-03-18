@@ -1,57 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>Tabla de Usuarios</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin-top: 50px;
+            }
+            table {
+                margin: 0 auto;
+                border-collapse: collapse; /* Mantiene los bordes limpios y unidos */
+                width: 80%;
+                box-shadow: 0px 0px 10px rgba(0,0,0,0.1); /* Un toque de sombra para que quede pro */
+            }
+            th, td {
+                border: 1px solid #333; /* Borde oscuro para que se vea bien la cuadrícula */
+                padding: 10px;
+            }
+            th {
+                background-color: #007BFF; /* Cabecera azul */
+                color: white; /* Texto blanco en la cabecera */
+            }
+            /* Truco visual: filas alternas de distinto color (cebra) */
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+        </style>
     </head>
     <body>
+        <h2>Lista de Usuarios (JSON a Tabla)</h2>
+        
         <table>
             <thead>
                 <tr>
-                    <td></td>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Edad</th>
+                    <th>Ciudad</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td id="moderno"></td>
-                </tr>
-                <tr id="rustico"></tr>
+            <tbody id="moderno">
             </tbody>
         </table>
-        <div id="Muestreo">Hola</div>
-        <script src="https://code.jquery.com/jquery-4.0.0.min.js"
-        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" 
-        crossorigin="anonymous"></script>
+        
+        <div id="Muestreo" style="margin-top: 20px; font-weight: bold; color: green;"></div>
+
         <script>
-            $(document).ready(function() {
-            console.log("Mensaje: " + {nombre: "Alberto", apellidos:"Pingi", edad: "19", ciudad: "Sevilla"})
-            let obj = {nombre: "Alberto", apellidos:"Pingi", edad: "19", ciudad: "Sevilla"};
-            let objserializado = serializar(obj);
-            console.log("Objeto serializado: " + objserializado);
+            document.addEventListener("DOMContentLoaded", function() {
+                
+                // 1. Creamos el Array de objetos
+                let obj = [
+                    {nombre: "Alberto", apellidos: "Pingi", edad: "19", ciudad: "Sevilla"},
+                    {nombre: "María", apellidos: "García", edad: "25", ciudad: "Madrid"},
+                    {nombre: "Juan", apellidos: "López", edad: "30", ciudad: "Barcelona"},
+                    {nombre: "Ana", apellidos: "Martínez", edad: "22", ciudad: "Valencia"},
+                    {nombre: "Luis", apellidos: "Sánchez", edad: "28", ciudad: "Bilbao"},
+                    {nombre: "Angel", apellidos: "Carapapa", edad:"14", ciudad: "ActivaCam"}
+                ];
+                
+                let tablaModerno = document.getElementById("moderno");
+                
+                // 2. Lo mostramos en el HTML
+                for (let i = 0; i < obj.length; i++) {
+                    // Ahora creamos 4 <td> separados, uno para cada dato del objeto
+                    let fila = `<tr>
+                                    <td>${obj[i].nombre}</td>
+                                    <td>${obj[i].apellidos}</td>
+                                    <td>${obj[i].edad}</td>
+                                    <td>${obj[i].ciudad}</td>
+                                </tr>`;
+                    
+                    tablaModerno.innerHTML += fila;
+                }
+
+                // 3. Lo convertimos a texto (Serializar)
+                let objserializado = serializar(obj);
+                console.log("Objeto convertido a texto (JSON): " + objserializado);
+
+                // 4. Lo volvemos a convertir a objeto (Deserializar)
+                let deVueltaAObjeto = recibir(objserializado);
+                
+                // 5. Mostramos el nombre recuperado en el div inferior
+                document.getElementById("Muestreo").innerHTML = "Dato recuperado tras deserializar: " + deVueltaAObjeto[0].nombre;
             });
 
-            $("#Muestreo").html(objs.nombre);
-
-            function mostrar(obj) {
-                console.log("Objeto: " + obj.nombre);
-            }
-
+            // --- TUS FUNCIONES ---
             function serializar(obj) {
-                return JSON.stringify(obj)
+                return JSON.stringify(obj);
             }
 
-            function deserializar(obj) {
-                return JSON.parse(objJson)
-            }
-
-            function enviar(obj) {
-                console.log("serializado: " + obj.nombre);
-                return serializar(obj);
+            function deserializar(objJson) { 
+                return JSON.parse(objJson);
             }
 
             function recibir(json_serializado) {
-                console.log("Deserializado: " + json_serializado);
+                console.log("Recibiendo texto JSON...");
                 return deserializar(json_serializado);
             }
         </script>

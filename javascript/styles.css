@@ -1,0 +1,185 @@
+/* =========================================
+   1. RESET Y FUENTES CLÁSICAS (ESTILO MANUSCRITO)
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Usamos fuentes con serifa, las más parecidas a las imprentas antiguas */
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+}
+
+/* =========================================
+   2. EL PERGAMINO ENVEJECIDO
+   ========================================= */
+body {
+    /* Un color base de papel viejo */
+    background-color: #f4ebd8;
+    /* Un gradiente radial para simular que los bordes están quemados u oscurecidos por el tiempo */
+    background-image: radial-gradient(circle at center, transparent 40%, rgba(101, 67, 33, 0.4) 100%);
+    color: #3e2723; /* Color de tinta marrón oscuro, no negro puro */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+/* =========================================
+   3. TÍTULO DE LA OBRA (ESTILO CÓDICE)
+   ========================================= */
+h1 {
+    font-size: 3.5rem;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 40px;
+    border-bottom: 3px double #5c4033; /* Línea doble elegante */
+    padding-bottom: 15px;
+    /* Efecto de tinta ligeramente hundida en el papel */
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5), -1px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* Letra capital (la primera letra más grande y adornada) */
+h1::first-letter {
+    font-size: 5rem;
+    float: left;
+    line-height: 0.8;
+    margin-right: 10px;
+    color: #8b0000; /* Un rojo oscuro clásico para la capitular */
+}
+
+/* =========================================
+   4. EL FORMULARIO (NOTAS DEL ERUDITO)
+   ========================================= */
+form {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 50px;
+    padding: 30px;
+    border: 1px solid #8b4513; /* Borde sutil de tinta */
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05); /* Sombra muy suave */
+}
+
+form br { display: none; }
+
+form label {
+    display: block;
+    margin-top: 15px;
+    font-style: italic; /* Las cursivas dan un toque muy de la época */
+    font-size: 1.2rem;
+    color: #5c4033;
+}
+
+/* Las cajas de texto parecen líneas para escribir a pluma */
+form input[type="text"], 
+form input[type="number"] {
+    width: 100%;
+    padding: 10px 5px;
+    margin-top: 5px;
+    background: transparent; /* Fondo transparente para ver el pergamino */
+    border: none;
+    border-bottom: 1px dashed #5c4033; /* Línea punteada como guía de escritura */
+    font-size: 1.2rem;
+    color: #3e2723;
+    outline: none;
+}
+
+/* Al escribir, la tinta "brilla" un poco más oscura */
+form input[type="text"]:focus, 
+form input[type="number"]:focus {
+    border-bottom: 2px solid #3e2723;
+    background: rgba(139, 69, 19, 0.05);
+}
+
+/* =========================================
+   5. EL BOTÓN "SELLO DE CERA"
+   ========================================= */
+#boton {
+    display: block;
+    margin: 40px auto 0;
+    padding: 15px 30px;
+    background-color: #8b0000; /* Rojo sello de cera */
+    color: #f4ebd8;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: 2px solid #5a0000;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 2px 2px 5px rgba(0,0,0,0.3);
+    transition: all 0.2s;
+}
+
+#boton:hover {
+    background-color: #5a0000; /* Se oscurece al pasar el ratón */
+    transform: scale(0.98); /* Parece que lo estás estampando */
+}
+
+/* =========================================
+   6. LA TABLA (EL REGISTRO DEL GREMIO)
+   ========================================= */
+table {
+    width: 100%;
+    max-width: 900px;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    border: 3px double #5c4033; /* Borde doble clásico */
+    background: rgba(255, 255, 255, 0.2);
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #8b4513; /* Líneas interiores finas */
+}
+
+th {
+    background-color: rgba(139, 69, 19, 0.1);
+    font-size: 1.3rem;
+    font-style: italic;
+    font-weight: normal;
+    letter-spacing: 1px;
+}
+
+td {
+    font-size: 1.1rem;
+}
+
+/* Efecto muy sutil al pasar la "pluma" (el ratón) por la fila */
+tbody tr:hover {
+    background-color: rgba(139, 69, 19, 0.05);
+}
+
+/* =========================================
+   7. EL TEXTO JSON (LENGUAJE SECRETO ALQUÍMICO)
+   ========================================= */
+#jsonTexto {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    /* Fuente monoespaciada pero integrándola en el diseño */
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    color: #2b1d0e;
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 1px solid #5c4033;
+    border-radius: 2px;
+    word-break: break-all;
+    line-height: 1.6;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Le ponemos un título pequeñito como si fuera un tomo extra */
+#jsonTexto::before {
+    content: "Tractatus Logico-Data (JSON):";
+    display: block;
+    font-family: 'Palatino Linotype', serif;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #8b0000;
+    border-bottom: 1px solid #8b4513;
+    padding-bottom: 5px;
+}

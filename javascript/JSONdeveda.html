@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>JSON de verdad</h1>
+    <form>
+        <br>
+        <label>Nombre:</label>
+        <input type="text" id="nombre">
+        <br>
+        <label>Apellidos:</label>
+        <input type="text" id="apellidos">
+        <br>
+        <label>Edad:</label>
+        <input type="number" id="edad">
+        <br>
+        <label>Ciudad:</label>
+        <input type="text" id="ciudad">
+        <br><br>
+        <input type="button" id="boton" value="Introducir" onclick="introducir()">
+        <br>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Edad</th>
+                <th>Ciudad</th>
+            </tr>
+        </thead>
+        <tbody id="Tabla"></tbody>
+    </table>
+
+    <p id="jsonTexto"></p>
+    
+    <script>
+        // Array de objetos creado
+        let obj = [
+                {nombre: "Alberto", apellidos: "Pingi", edad: "19", ciudad: "Sevilla"},
+                {nombre: "María", apellidos: "García", edad: "25", ciudad: "Madrid"},
+                {nombre: "Juan", apellidos: "López", edad: "30", ciudad: "Barcelona"},
+                {nombre: "Ana", apellidos: "Martínez", edad: "22", ciudad: "Valencia"},
+                {nombre: "Luis", apellidos: "Sánchez", edad: "28", ciudad: "Bilbao"},
+                {nombre: "Carmen", apellidos: "Jobacho", edad: "18", ciudad: "La Puebla de Cazalla", amor: "Te amo"}
+
+            ];
+        // 1. UN SOLO evento para esperar a que cargue la página
+        document.addEventListener('DOMContentLoaded', function() {
+
+
+            let tabla = document.getElementById('Tabla');
+
+            // Mostramos en el html 
+            for (let i = 0; i < obj.length; i++) {
+                let crearFilas = `<tr>
+                                    <td>${obj[i].nombre}</td>
+                                    <td>${obj[i].apellidos}</td>
+                                    <td>${obj[i].edad}</td>
+                                    <td>${obj[i].ciudad}</td>
+                                 </tr>`;
+                tabla.innerHTML += crearFilas;
+            }
+
+            let objConvertidoEnTexto = ConvertirTexto(obj);
+
+            document.getElementById("jsonTexto").innerHTML = objConvertidoEnTexto
+            // El console.log funciona aquí porque 'obj' nació aquí dentro
+            console.log("Array original:", obj);
+
+        }); // FIN DEL EVENTO (¡Muy importante cerrar esto!)
+
+        // --- FUNCIONES EXTRA (Fuera del evento para mantener el orden) ---
+        function introducir() {
+            let nombre = document.getElementById("nombre").value;
+            let apellidos = document.getElementById("apellidos").value;
+            let edad = document.getElementById("edad").value;
+            let ciudad = document.getElementById("ciudad").value;
+
+            let nuevoValor = {
+                nombre: nombre,
+                apellidos: apellidos,
+                edad: edad,
+                ciudad: ciudad,
+            }
+
+            obj.push(nuevoValor);
+
+            let tabla = document.getElementById('Tabla');
+            let nuevaFila = `<tr>
+                                <td>${nombre}</td>
+                                <td>${apellidos}</td>
+                                <td>${edad}</td>
+                                <td>${ciudad}</td>
+                             </tr>`;
+            tabla.innerHTML += nuevaFila;
+
+            document.getElementById("jsonTexto").innerHTML = ConvertirTexto(obj);
+
+            // EXTRA (Opcional pero pro): Limpiar los inputs después de introducirlos
+            document.getElementById("nombre").value = "";
+            document.getElementById("apellidos").value = "";
+            document.getElementById("edad").value = "";
+            document.getElementById("ciudad").value = "";
+
+        }
+
+        function ConvertirTexto(obj) {
+            return JSON.stringify(obj);
+        }
+
+        function volverObjeto(objTexto){
+            return JSON.parse(objTexto);
+        }
+    </script>
+</body>
+</html>
