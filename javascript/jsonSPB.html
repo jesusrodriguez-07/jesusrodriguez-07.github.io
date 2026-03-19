@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>JSON de verdad</h1>
+    <form>
+        <br>
+        <label>Nombre:</label>
+        <input type="text" id="nombre">
+        <br>
+        <label>Apellidos:</label>
+        <input type="text" id="apellidos">
+        <br>
+        <label>Edad:</label>
+        <input type="number" id="edad">
+        <br>
+        <label>Ciudad:</label>
+        <input type="text" id="ciudad">
+        <br><br>
+        <input type="button" id="boton" value="Introducir" onclick="introducir()">
+        <br>
+    </form>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Edad</th>
+                <th>Ciudad</th>
+            </tr>
+        </thead>
+        <tbody id="Tabla"></tbody>
+    </table>
+
+    <p id="jsonTexto"></p>
+</body>
+<script>
+    const inputNombre = document.getElementById("nombre");
+    const inputApellidos = document.getElementById("apellidos");
+    const inputEdad = document.getElementById("edad");
+    const inputCiudad = document.getElementById("ciudad");
+    const btnIntro = document.getElementById("boton");
+    const tbody = document.getElementById("Tabla");
+
+    let usuarios = [];
+
+    function pintarTabla(array) {
+        tbody.innerHTML = "";
+
+        array.forEach(x => {
+            let fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${x.nombre}</td>
+                <td>${x.apellidos}</td>
+                <td>${x.edad}</td>
+                <td>${x.ciudad}</td>
+            `;
+            tbody.appendChild(fila);
+        });
+
+    }
+
+    function resetInputs() {
+        inputNombre.value = "";
+        inputApellidos.value = "";
+        inputEdad.value = "";
+        inputCiudad.value = "";
+    }
+
+    btnIntro.addEventListener("click", function() {
+        let nombre = inputNombre.value;
+        let apellidos = inputApellidos.value;
+        let edad = Number(inputEdad.value);
+        let ciudad = inputCiudad.value;
+
+        if (nombre === "") {
+            alert("Debes introducir un nombre.");
+            resetInputs();
+            return;
+        }
+        if (usuarios.some(x => x.nombre === nombre) && usuarios.some(x => x.apellidos === apellidos)) {
+            alert("Ya hay una persona con el mismo nombre.");
+            resetInputs();
+            return;
+        }
+        if (edad === 14) {
+            alert("Activa Cam.");
+        }
+        if (edad < 0 || edad > 116) {
+            alert("Edad no válida.");
+            resetInputs();
+            return;
+        }
+
+        let usuario = {
+            nombre: nombre,
+            apellidos: apellidos,
+            edad: edad,
+            ciudad: ciudad
+        }
+        usuarios.push(usuario);
+        pintarTabla(usuarios);
+    });
+
+
+</script>
+
+</html>

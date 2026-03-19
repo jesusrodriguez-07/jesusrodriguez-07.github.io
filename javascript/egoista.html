@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Simulacro Final: Proyecto Cero</title>
+    <style>
+        /* ESTILOS BASE */
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f0f1a;
+            color: #fff;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        .panel {
+            background: #1a1a2e;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #0f3460;
+            border-radius: 5px;
+        }
+
+        input,
+        button {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 3px;
+        }
+
+        input {
+            background: #fff;
+            color: #000;
+        }
+
+        button {
+            background: #0f3460;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #e94560;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            border: 1px solid #0f3460;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #16213e;
+        }
+
+        textarea {
+            width: 100%;
+            height: 60px;
+            margin-top: 10px;
+        }
+
+        /* CLASES CSS DINÁMICAS (¡Úsalas con JS!) */
+        .modo-peligro {
+            background: #4a0000;
+            color: #ffcccc;
+        }
+
+        .modo-peligro .panel {
+            border-color: red;
+            box-shadow: 0 0 15px red;
+        }
+
+        .fila-titular {
+            background: #1f4027;
+            font-weight: bold;
+            color: #00ff66;
+        }
+    </style>
+</head>
+
+<body id="cuerpo">
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>PROYECTO CERO: SELECCIÓN GLOBAL</h1>
+        <button id="btn-protocolo">🚨 Activar Protocolo</button>
+    </div>
+
+    <div class="panel">
+        <h3>1. Registrar Egoísta</h3>
+        <input type="text" id="in-nombre" placeholder="Nombre">
+        <input type="number" id="in-ego" placeholder="Nivel de Ego">
+        <button id="btn-registrar">Registrar</button>
+    </div>
+
+    <div class="panel">
+        <h3>2. Filtro de Búsqueda</h3>
+        <input type="text" id="in-filtro" placeholder="Buscar por nombre...">
+        <button id="btn-filtrar">Buscar</button>
+        <button id="btn-limpiar">Mostrar Todos</button>
+    </div>
+
+    <div class="panel">
+        <h3>3. Plantilla Oficial</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Ego</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-plantilla">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel">
+        <h3>4. Servidor Central (JSON)</h3>
+        <button id="btn-exportar">↓ Generar JSON</button>
+        <button id="btn-importar">↑ Cargar JSON</button><br>
+        <textarea id="texto-json" placeholder="Datos del servidor..."></textarea>
+    </div>
+
+    <script>
+        /*
+       Tus 6 Misiones (Lee con extrema atención):
+La Alarma (CSS Global): Tienes un botón "Activar Protocolo". Al pulsarlo, debe hacerle un .classList.toggle("modo-peligro") al <body id="cuerpo">. El CSS ya está preparado para que la pantalla se vuelva roja.
+Reclutamiento Perfecto: Inputs de Nombre y Ego. Valida que no estén vacíos, que el ego sea positivo y que no haya clones (.some()). Atención: Cuando crees el objeto jugador, añádele una propiedad extra por defecto: estado: "Banquillo".
+El Orden Natural: Al repintar la tabla, debe estar siempre ordenada de mayor a menor Ego (.sort()).
+Acciones Dinámicas (El Doble Botón): En cada fila de la tabla tendrás que inyectar DOS botones dinámicos dentro de una celda:
+Botón Expulsar: Borra al jugador del array (.splice()) y repinta.
+Botón Cambiar Estado (CSS Local): Si el jugador está en el "Banquillo", lo cambia a "Titular". Si es "Titular", lo cambia a "Banquillo". Y aquí viene la magia CSS: En tu función pintar(), si el jugador es Titular, añade a su <tr> la clase CSS fila-titular.
+El Escáner: Un input y un botón para filtrar por Nombre (usando .toLowerCase() y .includes()). Solo repinta a los que coincidan.
+Hibernación: Botones de Exportar e Importar JSON funcionando con su try...catch y usando .value. TIENES 45 MINUTOS.
+   */
+        // Botones Principales
+        const btnProtocolo = document.getElementById("btn-protocolo");
+        const btnRegistrar = document.getElementById("btn-registrar");
+        const btnFiltrar = document.getElementById("btn-filtrar");
+        const btnLimpiar = document.getElementById("btn-limpiar");
+        // Inputs
+        const inputNombre = document.getElementById("in-nombre");
+        const inputEgo = document.getElementById("in-ego");
+        const inputFiltro = document.getElementById("in-filtro");
+        // TBODY
+        const tbody = document.getElementById("tabla-plantilla");
+        // JSON Part
+        const btnExportar = document.getElementById("btn-exportar");
+        const btnImportar = document.getElementById("btn-importar");
+        const textoJson = document.getElementById("texto-json");
+
+        let egoistas = [];
+
+        function pintarTabla(array) {
+            tbody.innerHTML = "";
+            array.sort((a, b) => b.ego - a.ego);
+
+            array.forEach((jugador, indice) => {
+                let fila = document.createElement("tr");
+                if (jugador.estado === "Titular") {
+                    fila.classList.add("fila-titular");
+                }
+                fila.innerHTML = `
+                    <td>${jugador.nombre}</td>
+                    <td>${jugador.ego}</td>
+                    <td>${jugador.estado}</td>
+                `;
+
+                let celdaBtn = document.createElement("td");
+                let btnExpulsar = document.createElement("button");
+                btnExpulsar.textContent = "Expulsar";
+                btnExpulsar.addEventListener("click", function () {
+                    array.splice(indice, 1);
+                    pintarTabla(array);
+                });
+                let btnCambiar = document.createElement("button");
+                btnCambiar.textContent = "Cambiar Estado";
+                btnCambiar.addEventListener("click", function () {
+                    if (jugador.estado === "Banquillo") {
+                        jugador.estado = "Titular";
+                    } else {
+                        jugador.estado = "Banquillo";
+                    }
+                    pintarTabla(array);
+                });
+
+                celdaBtn.appendChild(btnExpulsar);
+                celdaBtn.appendChild(btnCambiar);
+
+                fila.appendChild(celdaBtn);
+                tbody.appendChild(fila);
+                resetTabla();
+            });
+        }
+
+        function resetTabla() {
+            inputEgo.value = "";
+            inputNombre.value = "";
+        }
+
+        btnRegistrar.addEventListener("click", function () {
+            let nombreEgoista = inputNombre.value;
+            let egoEgoista = Number(inputEgo.value);
+            let estadoEgoista = "Banquillo";
+            if (nombreEgoista === "") {
+                resetTabla();
+                return;
+            }
+            if (egoistas.some(jugador => jugador.nombre === nombreEgoista)) {
+                resetTabla();
+                return;
+            }
+            if (egoEgoista <= 0) {
+                resetTabla();
+                return;
+            }
+
+            let egoista = {
+                nombre: nombreEgoista,
+                ego: egoEgoista,
+                estado: estadoEgoista
+            }
+            egoistas.push(egoista);
+            pintarTabla(egoistas);
+        });
+
+        btnFiltrar.addEventListener("click", function () {
+            let filtro = inputFiltro.value;
+            if (filtro === "") {
+                return;
+            }
+
+
+            let elegido = egoistas.filter(j => j.nombre.toLowerCase().includes(filtro.toLowerCase())); pintarTabla(elegido);
+
+        });
+
+        btnLimpiar.addEventListener("click", function () {
+            pintarTabla(egoistas);
+        });
+
+        btnProtocolo.addEventListener("click", function () {
+            let cuerpo = document.getElementById("cuerpo");
+            cuerpo.classList.toggle("modo-peligro");
+            if (btnProtocolo.textContent === "🚨 Activar Protocolo") {
+                btnProtocolo.textContent = "🚨 Desactivar Protocolo"
+            } else if (btnProtocolo.textContent === "🚨 Desactivar Protocolo") {
+                btnProtocolo.textContent = "🚨 Activar Protocolo";
+            }
+
+        });
+
+        btnExportar.addEventListener("click", function () {
+            let congelarEgoistas = JSON.stringify(egoistas);
+            textoJson.textContent = congelarEgoistas;
+        });
+
+        btnImportar.addEventListener("click", function () {
+            try {
+                egoistas = JSON.parse(textoJson.value);
+                pintarTabla(egoistas);
+            } catch (error) {
+                alert("JSON inválido.")
+            }
+        });
+    </script>
+</body>
+
+</html>
