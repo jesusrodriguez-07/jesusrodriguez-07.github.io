@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+
+        html {
+            background-color: rgba(245, 247, 181, 0.521);
+        }
+
+        form input[type="text"], 
+        form input[type="number"] {
+        background-color: white;
+        width: 100%;
+        padding: 10px 5px;
+        margin-top: 5px;
+        border-right: 1px dashed black;
+        border-bottom: 1px dashed black;
+        font-size: 1.2rem;
+        }
+
+        label{
+            font-family: 'Courier New', Courier, monospace;
+            font-style: italic;
+            font-weight: bolder;
+        }
+
+        #aparcar {
+        display: block;
+        margin: 40px auto 0;
+        padding: 15px 30px;
+        background-color: #8b0000;
+        color: white;
+        font-size: 30px;
+        letter-spacing: 2px;
+        border: 2px solid #5a0000;
+        transition: 0.3s;
+        }
+
+        #aparcar:hover {
+            background-color: #5a0000;
+            transform: scale(0.98); 
+            transition: 0.3s;
+        }
+
+        table {
+            margin: 0 auto;
+            width: 80%;
+            border: 1px dashed black
+        }
+
+            th, td {
+        padding: 15px;
+        text-align: center;
+        border: 1px solid black;
+        }
+
+        th {
+            color: white;
+            font-weight: bold;
+            background-color: rgb(22, 218, 218);
+        }
+
+        #Ocupado {
+            background-color: rgb(247, 97, 97);
+            color: white
+        }
+
+        #Libre {
+            background-color: rgb(169, 243, 73);
+        }
+
+        #Salir {
+            background-color: rgb(91, 223, 58);
+            width: 100%;
+            height: 25px;
+            transition: 0.4s;
+        }
+        
+        #Salir:hover {
+            transition: 0.4s;
+            background-color: rgb(118, 156, 55);
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <label>Matrícula:</label>
+        <input type="text" id="matricula">
+        <br>
+        <label>Nº de plaza</label>
+        <input type="number" id="plaza">
+        <br><br>
+<input type="button" id="aparcar" value="Aparcar" onclick="aparcarCoche()">    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>NºPlaza</th>
+                <th>Matrícula</th>
+                <th>Salida</th>
+            </tr>
+        </thead>
+        <tbody id="tabla">
+        </tbody>
+    </table>
+
+    <script>
+            let registro = [
+                {matricula: "123821DFH"},
+                {matricula: undefined},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {}
+            ];
+            
+
+        function aparcarCoche() {
+            let matricula = document.getElementById("matricula").value;
+            let nPlaza = document.getElementById("plaza").value;
+            let nuevoRegistro = {matricula: matricula}
+
+            registro[nPlaza] = nuevoRegistro;
+            
+        };
+
+        function L(registro) {
+            return registro[i].matricula = undefined;
+        }
+
+                document.addEventListener('DOMContentLoaded', function pintarTabla() {
+            let tabla = document.getElementById("tabla")
+            tabla.innerHTML = "";
+
+            for (let i = 0; i < registro.length;i++) {
+                if (registro[i].matricula == undefined) {
+                    let imprimir = `<tr id="Libre">
+                                    <td>${[i]}</td>
+                                    <td>----</td>
+                                    <td><input type="button" id="Salir" value="L" onclick="L(registro[i])"></td>
+                                </tr>`;
+
+            tabla.innerHTML += imprimir;
+                } else {
+                    let imprimir = `<tr id="Ocupado">
+                                    <td>${[i]}</td>
+                                    <td>${registro[i].matricula}</td>
+                                    <td><input type="button" id="Salir" value="L" onclick="L(registro[i])"></td>
+                                </tr>`;
+
+            tabla.innerHTML += imprimir;
+                }
+            }
+        })
+
+        function textoJSON(registro) {
+            return JSON.stringify(registro)
+        }
+
+        let registroTexto = textoJSON(registro)
+
+        function volverObjetoJSON(registroTexto) {
+            return JSON.parse(registroTexto)
+        }
+    </script>
+</body>
+</html>

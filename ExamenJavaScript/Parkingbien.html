@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking VIP</title>
+    <style>
+        html {
+            background-color: rgba(245, 247, 181, 0.521);
+        }
+
+        form input[type="text"], 
+        form input[type="number"] {
+            background-color: white;
+            width: 100%;
+            padding: 10px 5px;
+            margin-top: 5px;
+            border-right: 1px dashed black;
+            border-bottom: 1px dashed black;
+            font-size: 1.2rem;
+        }
+
+        label {
+            font-family: 'Courier New', Courier, monospace;
+            font-style: italic;
+            font-weight: bolder;
+        }
+
+        #aparcar {
+            display: block;
+            margin: 40px auto 0;
+            padding: 15px 30px;
+            background-color: #8b0000;
+            color: white;
+            font-size: 30px;
+            letter-spacing: 2px;
+            border: 2px solid #5a0000;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        #aparcar:hover {
+            background-color: #5a0000;
+            transform: scale(0.98); 
+            transition: 0.3s;
+        }
+
+        table {
+            margin: 40px auto;
+            width: 80%;
+            border: 1px dashed black;
+            border-collapse: collapse; /* Añadido para que la tabla quede más limpia */
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid black;
+        }
+
+        th {
+            color: white;
+            font-weight: bold;
+            background-color: rgb(22, 218, 218);
+        }
+
+        /* ¡CAMBIO CLAVE! Pasamos de # (ID) a . (CLASE) */
+        .Ocupado {
+            background-color: rgb(247, 97, 97);
+            color: white;
+        }
+
+        .Libre {
+            background-color: rgb(169, 243, 73);
+        }
+
+        .Salir {
+            background-color: rgb(91, 223, 58);
+            width: 100%;
+            height: 30px;
+            transition: 0.4s;
+            cursor: pointer;
+            border: 1px solid black;
+        }
+        
+        .Salir:hover:not(:disabled) {
+            transition: 0.4s;
+            background-color: rgb(118, 156, 55);
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <label>Matrícula:</label>
+        <input type="text" id="matricula">
+        <br>
+        <label>Nº de plaza (0 al 19):</label>
+        <input type="number" id="plaza">
+        <br><br>
+        <input type="button" id="aparcar" value="Aparcar" onclick="aparcarCoche()">    
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nº Plaza</th>
+                <th>Matrícula</th>
+                <th>Salida</th>
+            </tr>
+        </thead>
+        <tbody id="tabla">
+        </tbody>
+    </table>
+
+    <script>
+        // Nuestro array de 20 plazas
+        let registro = [
+            {matricula: "123821DFH"},
+            {matricula: undefined}, {}, {}, {}, {}, {}, {}, {}, {},
+            {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+        ];
+            
+        // 1. SACAMOS PINTARTABLA() FUERA PARA PODER LLAMARLA CUANDO QUERAMOS
+        function pintarTabla() {
+            let tabla = document.getElementById("tabla");
+            
+            // ¡VACIAR LA TABLA ANTES DE REPINTARLA! Si no, se duplican las filas
+            tabla.innerHTML = ""; 
+
+            for (let i = 0; i < registro.length; i++) {
+                if (registro[i].matricula === undefined || registro[i].matricula === "") {
+                    // Usamos class="" en lugar de id=""
+                    let imprimir = `<tr class="Libre">
+                                        <td>${i}</td>
+                                        <td>----</td>
+                                        <td><input type="button" class="Salir" value="L" disabled></td>
+                                    </tr>`;
+                    tabla.innerHTML += imprimir;
+                } else {
+                    // Usamos class="" en lugar de id="" y le pasamos la 'i' a la función L()
+                    let imprimir = `<tr class="Ocupado">
+                                        <td>${i}</td>
+                                        <td>${registro[i].matricula}</td>
+                                        <td><input type="button" class="Salir" value="L" onclick="L(${i})"></td>
+                                    </tr>`;
+                    tabla.innerHTML += imprimir;
+                }
+            }
+        }
+
+        // Cuando la página carga, pintamos la tabla por primera vez
+        document.addEventListener('DOMContentLoaded', pintarTabla);
+
+        // 2. FUNCIÓN PARA APARCAR
+        function aparcarCoche() {
+            let matricula = document.getElementById("matricula").value;
+            let nPlaza = document.getElementById("plaza").value;
+
+            // Seguridad: si están vacíos, no hacemos nada
+            if (matricula === "" || nPlaza === "") {
+                alert("¡Rellena los datos, miarma!");
+                return;
+            }
+
+            let nuevoRegistro = {matricula: matricula};
+            registro[nPlaza] = nuevoRegistro; // Guardamos en el array
+            
+            pintarTabla(); // ¡PINTAMOS LA TABLA PARA VER EL CAMBIO!
+            
+            // Limpiamos las cajas de texto para el siguiente coche
+            document.getElementById("matricula").value = "";
+            document.getElementById("plaza").value = "";
+        };
+
+        // 3. FUNCIÓN PARA SACAR EL COCHE (Corregida)
+        function L(numeroPlaza) {
+            // Ponemos a undefined solo la plaza que nos han pasado por parámetro
+            registro[numeroPlaza].matricula = undefined;
+            
+            pintarTabla(); // ¡PINTAMOS LA TABLA PARA VER EL CAMBIO!
+        }
+
+        // Tus funciones JSON por si las quieres usar luego
+        function textoJSON(registro) {
+            return JSON.stringify(registro);
+        }
+
+        function volverObjetoJSON(registroTexto) {
+            return JSON.parse(registroTexto);
+        }
+    </script>
+</body>
+</html>
