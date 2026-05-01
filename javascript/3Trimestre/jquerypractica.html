@@ -1,11 +1,138 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>JQUERY</title>
 </head>
+
 <body>
-    
+    <label for="textName">Introduce el nombre: </label>
+    <input type="text" id="textName"><br><br>
+    <label for="textLastName">Introduce el apellido: </label>
+    <input type="text" id="textLastName"><br><br>
+    <label for="textCity">Introduce la ciudad: </label>
+    <input type="text" id="textCity"><br><br>
+    <label for="numAge">Introduce la edad: </label>
+    <input type="number" id="numAge"><br><br>
+    <input type="button" value="Enviar" id="btnSend">
+
+    <table border="1" style="margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Edad</th>
+                <th>Ciudad</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody id="datos"></tbody>
+    </table>
+
+    <ul>
+        <li id="suma">Suma: </li>
+        <li id="media">Media: </li>
+        <li id="max">Máxima: </li>
+        <li id="min">Mínima: </li>
+    </ul>
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script>
+        let personas = [];
+
+        function serializar(objeto) {
+            return JSON.stringify(objeto);
+        }
+
+        function deserializar(json) {
+            return JSON.parse(json);
+        }
+
+        function personaVieja(lista) {
+            if (lista.length === 0) return 0;
+            return Math.max(...lista.map(p => p.edad));
+        }
+
+        function personaJoven(lista) {
+            if (lista.length === 0) return 0;
+            return Math.min(...lista.map(p => p.edad));
+        }
+
+        function mediaEdades(lista) {
+            if (lista.length === 0) return 0;
+            return sumaEdades(lista) / lista.length;
+        }
+
+        function sumaEdades(lista) {
+            return lista.reduce((acc, p) => acc + p.edad, 0);
+        }
+
+        function pintarTabla(lista) {
+            let $datos = $("#datos");
+            $datos.empty();
+            lista.forEach((p, index) => {
+                let $tr = $("<tr>");
+                $tr.append($("<td>").text(p.nombre));
+                $tr.append($("<td>").text(p.apellidos));
+                $tr.append($("<td>").text(p.edad));
+                $tr.append($("<td>").text(p.ciudad));
+
+                let $btnBorrar = $("<button>").text("Borrar").click(function () {
+                    personas.splice(index, 1);
+                    actualizarInterfaz();
+                });
+
+                let $tdAccion = $("<td>").append($btnBorrar);
+                $tr.append($tdAccion);
+                $datos.append($tr);
+            });
+        }
+
+        function pintarLista(lista) {
+            $("#max").text(`Máxima: ${personaVieja(lista)} años`);
+            $("#min").text(`Mínima: ${personaJoven(lista)} años`);
+            $("#suma").text(`Suma: ${sumaEdades(lista)} años`);
+            $("#media").text(`Media: ${mediaEdades(lista)} años`);
+        }
+
+        function actualizarInterfaz() {
+            let json = serializar(personas);
+            let datos = deserializar(json);
+            pintarTabla(datos);
+            pintarLista(datos);
+        }
+
+        $(document).ready(function () {
+            $("#btnSend").click(function () {
+                if (!comprobarInputs()) {
+                    alert("Todos los campos son obligatorios y la edad debe ser mayor a 0");
+                    return;
+                }
+
+                let persona = {
+                    nombre: $("#textName").val(),
+                    apellidos: $("#textLastName").val(),
+                    edad: parseInt($("#numAge").val()),
+                    ciudad: $("#textCity").val()
+                };
+
+                personas.push(persona);
+                actualizarInterfaz();
+
+                $("#textName, #textLastName, #numAge, #textCity").val("");
+            });
+
+            function comprobarInputs() {
+                let nombre = $("#textName").val().trim();
+                let apellidos = $("#textLastName").val().trim();
+                let edad = $("#numAge").val();
+                let ciudad = $("#textCity").val().trim();
+
+                return nombre !== "" && apellidos !== "" && edad !== "" && parseInt(edad) > 0 && ciudad !== "";
+            }
+        });
+    </script>
 </body>
 </html>
