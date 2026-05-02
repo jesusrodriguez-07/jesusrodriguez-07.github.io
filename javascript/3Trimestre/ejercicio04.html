@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JQUERY - Ejercicio 3: RETO (Máximo 3 Hobbies)</title>
+</head>
+
+<body>
+    <label for="textName">Introduce el nombre: </label>
+    <input type="text" id="textName"><br><br>
+
+    <label for="textLastName">Introduce el apellido: </label>
+    <input type="text" id="textLastName"><br><br>
+
+    <label for="textCity">Introduce la ciudad: </label>
+    <input type="text" id="textCity"><br><br>
+
+    <label for="numAge">Introduce la edad: </label>
+    <input type="number" id="numAge"><br><br>
+
+    <fieldset style="margin-bottom: 20px; max-width: 500px;">
+        <legend>Hobbies (Máximo 3)</legend>
+        <input type="checkbox" name="hobbies[]" value="Deporte"> Deporte
+        <input type="checkbox" name="hobbies[]" value="Lectura"> Lectura
+        <input type="checkbox" name="hobbies[]" value="Música"> Música
+        <input type="checkbox" name="hobbies[]" value="Juegos"> Juegos
+        <input type="checkbox" name="hobbies[]" value="Cine"> Cine<br>
+        <input type="checkbox" name="hobbies[]" value="Teatro"> Teatro
+        <input type="checkbox" name="hobbies[]" value="Coleccionismo"> Coleccionismo
+        <input type="checkbox" name="hobbies[]" value="Bricolaje"> Bricolaje
+        <input type="checkbox" name="hobbies[]" value="Cosplay"> Cosplay
+    </fieldset>
+
+    <input type="button" value="Enviar" id="btnSend">
+
+    <table border="1" style="margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Edad</th>
+                <th>Ciudad</th>
+                <th>Hobbies</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody id="datos"></tbody>
+    </table>
+
+    <ul>
+        <li id="suma">Suma: </li>
+        <li id="media">Media: </li>
+        <li id="max">Máxima: </li>
+        <li id="min">Mínima: </li>
+    </ul>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        let personas = [];
+
+        // NUEVO: La caja fuerte global donde guardaremos lo que escupa la API
+        let datosAPI = {
+            suma: 0,
+            media: 0,
+            maximo: 0,
+            minimo: 0
+        };
+
+        function serializar(objeto) { return JSON.stringify(objeto); }
+        function deserializar(json) { return JSON.parse(json); }
+
+        function pintarTabla(lista) {
+            let $datos = $("#datos");
+            $datos.empty();
+            lista.forEach((p, index) => {
+                let $tr = $("<tr>");
+                $tr.append($("<td>").text(p.nombre));
+                $tr.append($("<td>").text(p.apellidos));
+                $tr.append($("<td>").text(p.edad));
+                $tr.append($("<td>").text(p.ciudad));
+                let hobbiesTexto = p.hobbies.length > 0 ? p.hobbies.join(", ") : "Ninguno";
+                $tr.append($("<td>").text(hobbiesTexto));
+
+                let $btnBorrar = $("<button>").text("Borrar").click(function () {
+                    personas.splice(index, 1);
+                    actualizarInterfaz();
+                });
+
+                let $tdAccion = $("<td>").append($btnBorrar);
+                $tr.append($tdAccion);
+                $datos.append($tr);
+            });
+        }
+
+        // CORREGIDA: Pedimos datos, los guardamos en la caja fuerte y pintamos
+        function solicitud() {
+            $.ajax({
+                url: "https://lm.iesnervion.es/eco.php",
+                method: "GET",
+                dataType: "json", // Cuidado, antes tenías "datatyope"
+            }).done(response => {
+                console.log("Respuesta de la API:", response);
+
+                // Suponiendo que la API devuelve { calculos: { media: X, suma: Y... } }
+                // Metemos los datos en la variable global
+                if (response && response.calculos) {
+                    datosAPI.suma = response.calculos.suma;
+                    datosAPI.media = response.calculos.media;
+                    datosAPI.maximo = response.calculos.maximo;
+                    datosAPI.minimo = response.calculos.minimo;
+                }
+
+                // Ahora sí, llamamos a pintar la lista porque YA tenemos los datos
+                pintarLista();
+
+            }).fail(error => {
+                console.log("Error en API:", error);
+            });
+        }
+
+        // Mantenemos tu función de envío intacta
+        function envio(objeto_js) {
+            $.ajax({
+                url: "https://jsonplaceholder.typicode.com/posts",
+                method: "POST",
+                data: JSON.stringify(objeto_js),
+                contentType: "application/json",
+                dataType: "json"
+            }).done(response => console.log("Post enviado:", response))
+                .fail(error => console.log(error));
+        }
+
+        // CORREGIDA: Ahora lee directamente de la variable global datosAPI
+        function pintarLista() {
+            $("#max").text(`Máxima: ${datosAPI.maximo} años`);
+            $("#min").text(`Mínima: ${datosAPI.minimo} años`);
+            $("#suma").text(`Suma: ${datosAPI.suma} años`);
+            $("#media").text(`Media: ${datosAPI.media} años`);
+        }
+
+        // CORREGIDA: Primero pinta la tabla local y luego lanza la petición a la API
+        function actualizarInterfaz() {
+            let json = serializar(personas);
+            let datos = deserializar(json);
+
+            pintarTabla(datos);
+
+            // Disparamos el AJAX. Cuando termine, él solo llamará a pintarLista()
+            solicitud();
+        }
+
+        $(document).ready(function () {
+
+            $('input[type="checkbox"]').on('change', function () {
+                let marcados = $('input[type="checkbox"]:checked').length;
+                if (marcados >= 3) {
+                    $('input[type="checkbox"]:not(:checked)').prop('disabled', true);
+                } else {
+                    $('input[type="checkbox"]').prop('disabled', false);
+                }
+            });
+
+            $("#btnSend").click(function () {
+                if (!comprobarInputs()) {
+                    alert("Todos los campos de texto son obligatorios y la edad debe ser mayor a 0");
+                    return;
+                }
+
+                let hobbiesSeleccionados = $('input[name="hobbies[]"]').filter(':checked').map(function () {
+                    return $(this).val();
+                }).get();
+
+                let persona = {
+                    nombre: $("#textName").val(),
+                    apellidos: $("#textLastName").val(),
+                    edad: parseInt($("#numAge").val()),
+                    ciudad: $("#textCity").val(),
+                    hobbies: hobbiesSeleccionados
+                };
+
+                personas.push(persona);
+
+                // Opcional: Si quieres usar tu función envio() cada vez que metes un usuario
+
+
+                actualizarInterfaz();
+                envio(persona);
+
+                $("#textName, #textLastName, #numAge, #textCity").val("");
+                $('input[name="hobbies[]"]').prop('checked', false);
+                $('input[name="hobbies[]"]').prop('disabled', false);
+            });
+
+            function comprobarInputs() {
+                let nombre = $("#textName").val().trim();
+                let apellidos = $("#textLastName").val().trim();
+                let edad = $("#numAge").val();
+                let ciudad = $("#textCity").val().trim();
+
+                return nombre !== "" && apellidos !== "" && edad !== "" && parseInt(edad) > 0 && ciudad !== "";
+            }
+        });
+    </script>
+</body>
+
+</html>
