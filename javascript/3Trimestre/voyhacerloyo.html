@@ -1,75 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
-    <style>
-        #btnSend {
-            color: rgb(169, 89, 89);
-            background-color: rgb(119, 144, 136);
-        }
-
-        #btnSend:hover {
-            color: blue;
-            background-color: rgb(76, 193, 101);
-        }
-
-        #btnSend:active {
-            color: green;
-            background-color: rgb(155, 208, 126);
-        }
-    </style>
 </head>
-
 <body>
     <form>
-        <label for="textName">Introduce el nombre: </label>
-        <input type="text" id="textName"><br><br>
+        <label name="Nombre">Nombre: </label>
+        <input type="text" id="TextNombre"><br><br>
+        <label name="Nombre">Apellidos: </label>
+        <input type="text" id="TextApellido"><br><br>
+        <label name="Nombre">Ciudad: </label>
+        <input type="text" id="TextCiudad"><br><br>
+        <label name="Nombre">Edad: </label>
+        <input type="text" id="NumEdad"><br><br>
+        <input type="button" id="btnSend" value="Enviar">
+        </form>
 
-        <label for="textLastName">Introduce el apellido: </label>
-        <input type="text" id="textLastName"><br><br>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Ciudad</th>
+                    <th>Edad</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody id="datos"></tbody>
+        </table>
 
-        <label for="textCity">Introduce la ciudad: </label>
-        <input type="text" id="textCity"><br><br>
+        <ol>
+            <li id ="max">Máximo: </li>
+            <li id="min">Mínimo: </li>
+            <li id="suma">Suma: </li>
+            <li id="media">Media: </li>
+        </ol>
 
-        <label for="numAge">Introduce la edad: </label>
-        <input type="number" id="numAge"><br><br>
-
-        <fieldset style="margin-bottom: 20px; max-width: 500px;">
-            <legend>Hobbies (Máximo 3)</legend>
-            <input type="checkbox" name="hobbies[]" value="Deporte"> Deporte
-            <input type="checkbox" name="hobbies[]" value="Lectura"> Lectura
-            <input type="checkbox" name="hobbies[]" value="Música"> Música
-            <input type="checkbox" name="hobbies[]" value="Juegos"> Juegos
-            <input type="checkbox" name="hobbies[]" value="Cine"> Cine<br>
-            <input type="checkbox" name="hobbies[]" value="Teatro"> Teatro
-            <input type="checkbox" name="hobbies[]" value="Coleccionismo"> Coleccionismo
-            <input type="checkbox" name="hobbies[]" value="Bricolaje"> Bricolaje
-            <input type="checkbox" name="hobbies[]" value="Cosplay"> Cosplay
-        </fieldset>
-
-        <input type="button" value="Enviar" id="btnSend">
-    </form>
-    <table border="1" style="margin-top: 20px;">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Edad</th>
-                <th>Ciudad</th>
-                <th>Hobbies</th>
-                <th>Acción</th>
-            </tr>
-        </thead>
-        <tbody id="datos"></tbody>
-
-    </table>
-
-    <script>
-        let personas = [];
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+     <script>
+        let personas = []
 
         function serializar(objeto) {
             return JSON.stringify(objeto);
@@ -79,23 +50,30 @@
             return JSON.parse(json);
         }
 
-        function personaVieja(lista) {
+        function edadMax(lista) {
             if (lista.length === 0) return 0;
             return Math.max(...lista.map(p => p.edad));
         }
 
-        function personaJoven(lista) {
+         function edadMin(lista) {
             if (lista.length === 0) return 0;
             return Math.min(...lista.map(p => p.edad));
         }
 
-        function sumaEdades(lista) {
+        function sumaEdad(lista) {
             return lista.reduce((acc, p) => acc + p.edad, 0);
         }
 
         function mediaEdades(lista) {
             if (lista.length === 0) return 0;
-            return sumaEdades(lista) / lista.length;
+            return sumaEdad(lista) / lista.length
+        }
+
+        function pintarLista(lista) {
+            $("#max").text(`Máxima: ${edadMax(lista)} años.`);
+            $("#min").text(`Mínimo: ${edadMin(lista)} años.`);
+            $("#suma").text(`Suma: ${sumaEdad(lista)} años.`)
+            $("#media").text(`Media ${mediaEdades(lista)} años.`)
         }
 
         function pintarTabla(lista) {
@@ -104,71 +82,60 @@
             lista.forEach((p, index) => {
                 let $tr = $("<tr>");
                 $tr.append($("<td>").text(p.nombre));
-                $tr.append($("<td>").text(p.apellidos));
-                $tr.append($("<td>").text(p.edad));
+                $tr.append($("<td>").text(p.apellido));
                 $tr.append($("<td>").text(p.ciudad));
-                $tr.append($("<td>").text(p.hobbies.join(", ")));
-                let $btnBorrar = $("<button>").text("Borrar").click(() => {
+                $tr.append($("<td>").text(p.edad));
+
+                let $btnBorrar = $("<button>").text("Borrar").click(function () {
                     personas.splice(index, 1);
-                    pintarTabla(personas);
-                    actualizarEstadisticas();
+                    actualizarInterfaz();
                 });
-                $tr.append($("<td>").append($btnBorrar));
+
+                let $tdAccion = $("<td>").append($btnBorrar);
+                $tr.append($tdAccion);
                 $datos.append($tr);
             });
         }
-        function actualizarEstadisticas() {
-            $("#suma").text("Suma: " + sumaEdades(personas));
-            $("#media").text("Media: " + mediaEdades(personas).toFixed(2));
-            $("#max").text("Máxima: " + personaVieja(personas));
-            $("#min").text("Mínima: " + personaJoven(personas));
-        }
+
         function actualizarInterfaz() {
-            let json = serializar(personas);
-            console.log("Datos serializados:", json);
-            let deserializado = deserializar(json);
-            console.log("Datos deserializados:", deserializado);
-            pintarTabla(deserializado);
-            actualizarEstadisticas();
+            pintarTabla(personas);
+            pintarLista(personas);
         }
-        function obtenerHobbiesSeleccionados() {
-            let hobbies = [];
-            $("input[name='hobbies[]']:checked").each(function () {
-                hobbies.push($(this).val());
-            });
-            return hobbies;
-        }
-        function validarFormulario() {
-            let nombre = $("#textName").val().trim();
-            let apellidos = $("#textLastName").val().trim();
-            let ciudad = $("#textCity").val().trim();
-            let edad = parseInt($("#numAge").val());
-            let hobbies = obtenerHobbiesSeleccionados();
 
-            if (!nombre || !apellidos || !ciudad || isNaN(edad) || edad <= 0) {
-                alert("Por favor, completa todos los campos correctamente.");
-                return null;
-            }
-            if (hobbies.length > 3) {
-                alert("Selecciona un máximo de 3 hobbies.");
-                return null;
-            }
-            return { nombre, apellidos, ciudad, edad, hobbies };
-        }
-        $(document).ready(function () {
-            $("#btnSend").click(function () {
-                let persona = validarFormulario();
-                if (persona) {
-                    personas.push(persona);
-                    pintarTabla(personas);
-                    actualizarInterfaz();
-                    $("#textName, #textLastName, #textCity, #numAge").val("");
-                    $("input[name='hobbies[]']").prop("checked", false);
+        $(document).ready(function() {
+            $("#btnSend").click(function() {
+                if (!comprobarInputs()) {
+                    alert("Comprueba que los valores son correctos y que la edad es mayor a 0")
+                    return;
                 }
-            });
-        });
-        
-    </script>
-</body>
 
+                let persona = {
+                    nombre: $("#TextNombre").val(),
+                    apellido: $("#TextApellido").val(),
+                    ciudad: $("#TextCiudad").val(),
+                    edad: parseInt($("#NumEdad").val())   
+                };
+                personas.push(persona);
+                actualizarInterfaz();
+                $("#TextNombre, #TextApellido, #NumEdad, #TextCiudad").val("");
+            });
+
+            function comprobarInputs() {
+            let Nombre = $("#TextNombre").val().trim()
+            let Apellido = $("#TextApellido").val().trim()
+            let Ciudad = $("#TextCiudad").val().trim()
+            let Edad = $("#NumEdad").val()
+
+            console.log("Nombre leído:", Nombre);
+            console.log("Apellido leído:", Apellido);
+            console.log("Ciudad leída:", Ciudad);
+            console.log("Edad leída:", Edad);
+            console.log("¿La edad es mayor que 0?", parseInt(Edad) > 0);
+            
+            return Nombre !== "" && Apellido !== "" && Ciudad !== "" && parseInt(Edad) > 0
+            }
+        })
+     </script>
+
+</body>
 </html>
