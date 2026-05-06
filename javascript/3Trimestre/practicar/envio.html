@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Envío a API - Estilo Guapardo</title>
+   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+   
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+   <style>
+      /* 1. Reset básico y fuente */
+      * {
+         box-sizing: border-box;
+      }
+      
+      body {
+         font-family: 'Poppins', sans-serif;
+         /* Un fondo con un degradado chulo */
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+         height: 100vh;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         margin: 0;
+         color: #333;
+      }
+
+      /* 2. La tarjeta del formulario */
+      #envio {
+         background: rgba(255, 255, 255, 0.95);
+         padding: 40px;
+         border-radius: 15px;
+         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+         width: 100%;
+         max-width: 400px;
+         display: flex;
+         flex-direction: column;
+      }
+
+      /* Ocultamos los <br> porque el CSS se encargará de los espacios */
+      #envio br {
+         display: none;
+      }
+
+      /* 3. Estilos de las etiquetas (Labels) */
+      #envio label {
+         font-weight: 600;
+         margin-bottom: 8px;
+         margin-top: 20px;
+         color: #4a5568;
+         font-size: 0.95rem;
+      }
+
+      /* Quitamos el margen superior al primer elemento */
+      #envio label:first-of-type {
+         margin-top: 0;
+      }
+
+      /* 4. Estilos de las cajas de texto */
+      #envio input[type="text"],
+      #envio input[type="number"] {
+         padding: 12px 15px;
+         border: 2px solid #e2e8f0;
+         border-radius: 8px;
+         font-size: 1rem;
+         transition: all 0.3s ease;
+         outline: none;
+         font-family: 'Poppins', sans-serif;
+      }
+
+      /* Efecto al hacer clic en las cajas de texto */
+      #envio input[type="text"]:focus,
+      #envio input[type="number"]:focus {
+         border-color: #667eea;
+         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+      }
+
+      /* 5. El Botón */
+      #btnSend {
+         margin-top: 30px;
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+         color: white;
+         border: none;
+         padding: 15px;
+         border-radius: 8px;
+         font-size: 1.1rem;
+         font-weight: 600;
+         cursor: pointer;
+         transition: transform 0.2s, box-shadow 0.2s;
+         font-family: 'Poppins', sans-serif;
+      }
+
+      /* Efecto al pasar el ratón por el botón */
+      #btnSend:hover {
+         transform: translateY(-2px);
+         box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+      }
+      
+      /* Efecto al pulsar el botón */
+      #btnSend:active {
+         transform: translateY(0);
+      }
+   </style>
+</head>
+<body>
+   <form id="envio">
+      <label>Descripción: </label>
+      <input type="text" id="descripcion"><br><br>
+      
+      <label>idProveedor: </label>
+      <input type="number" id="idProveedor"><br><br>
+      
+      <label>Precio: </label>
+      <input type="number" id="precio" step="any"><br><br>
+      
+      <input type="button" id="btnSend" value="Enviar">
+   </form>
+
+   <script>
+      let objetos = []
+
+      function serializar(objeto) {
+         return JSON.stringify(objeto);
+      }
+
+      function deserializar(json) {
+         return JSON.parse(json);
+      }
+
+      function solicitud() {
+         $.ajax({
+            url: "https://lm.iesnervion.es/reto4.php",
+            method: "GET",
+            dataType: "json",
+         }).done(response => console.log(response))
+         .fail(error => console.log(error));
+      }
+
+      function envio(objeto) {
+         $.ajax({
+         url:"https://lm.iesnervion.es/reto4.php",
+         method: "POST", 
+         data: JSON.stringify(objeto),
+         contentType: "application/json",
+         dataType: "json"
+         }).done(response => console.log(response))
+         .fail(error => console.log(error))
+      }
+
+      $(document).ready(function() {
+         $("#btnSend").click(function() {
+            if (!comprobarInputs()) {
+               alert("Tienes que introducir correctamente los valores de entrada");
+               return;
+            }
+            let objeto = {
+               descripcion: $("#descripcion").val(),
+               idProveedor: parseInt($("#idProveedor").val()),
+               precio: parseFloat($("#precio").val())
+            }
+
+            objetos.push(objeto)
+            envio(objeto);
+            $("#descripcion, #idProveedor, #precio").val("");
+            solicitud();
+         })
+
+         function comprobarInputs() {
+            let descripcion = $("#descripcion").val().trim();
+            let idProveedor = $("#idProveedor").val();
+            let precio = $("#precio").val();
+
+            // Corregido a parseFloat para que los decimales del precio pasen la validación
+            return descripcion !== "" && idProveedor !== "" && precio !== "" && parseFloat(precio) > 0
+         }
+      })
+   </script>
+</body>
+</html>

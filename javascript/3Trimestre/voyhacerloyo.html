@@ -18,6 +18,16 @@
         <input type="button" id="btnSend" value="Enviar">
         </form>
 
+            <fieldset>
+                <legend>Hobbies</legend>
+                <input type="checkbox" name="hobbies[]" value="Deporte">Deporte
+                <input type="checkbox" name="hobbies[]" value="Musica">Musica
+                <input type="checkbox" name="hobbies[]" value="Leer">Leer
+                <input type="checkbox" name="hobbies[]" value="Cine">Cine
+                <input type="checkbox" name="hobbies[]" value="Bailar">Bailar
+                <input type="checkbox" name="hobbies[]" value="Cantar">Cantar
+            </fieldset>
+
         <table border="1">
             <thead>
                 <tr>
@@ -25,6 +35,7 @@
                     <th>Apellidos</th>
                     <th>Ciudad</th>
                     <th>Edad</th>
+                    <th>Hobbies</th>
                     <th>Eliminar</th>
                 </tr>
             </thead>
@@ -85,6 +96,7 @@
                 $tr.append($("<td>").text(p.apellido));
                 $tr.append($("<td>").text(p.ciudad));
                 $tr.append($("<td>").text(p.edad));
+                $tr.append($("<td>").text(p.hobbies));
 
                 let $btnBorrar = $("<button>").text("Borrar").click(function () {
                     personas.splice(index, 1);
@@ -109,15 +121,22 @@
                     return;
                 }
 
+
+                let hobbiesSeleccionados = $('input[name="hobbies[]"]:checked').map(function() {
+                    return $(this).val();
+                }).get().join(", ");
+
                 let persona = {
                     nombre: $("#TextNombre").val(),
                     apellido: $("#TextApellido").val(),
                     ciudad: $("#TextCiudad").val(),
-                    edad: parseInt($("#NumEdad").val())   
+                    edad: parseInt($("#NumEdad").val()),
+                    hobbies: hobbiesSeleccionados
                 };
                 personas.push(persona);
                 actualizarInterfaz();
                 $("#TextNombre, #TextApellido, #NumEdad, #TextCiudad").val("");
+                $('input[type="checkbox"]').prop('checked', false).prop('disabled', false)
             });
 
             function comprobarInputs() {
@@ -134,6 +153,17 @@
             
             return Nombre !== "" && Apellido !== "" && Ciudad !== "" && parseInt(Edad) > 0
             }
+
+            $('input[type="checkbox"]').on('change', function() {
+               
+               let contadorPulsado = $('input:checkbox').filter(':checked').length;
+                
+                if (contadorPulsado >= 3) {
+                    $('input:checkbox:not(:checked)').prop('disabled', true);
+                } else {
+                    $('input[type="checkbox"]').prop('disabled', false);
+                }
+            });
         })
      </script>
 

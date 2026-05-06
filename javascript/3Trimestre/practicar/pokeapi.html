@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Mini Pokédex</title>
+   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+   <style>
+      * { box-sizing: border-box; }
+      
+      body {
+         font-family: 'Poppins', sans-serif;
+         /* Fondo rojo Pokédex */
+         background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+         min-height: 100vh;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         margin: 0;
+         padding: 20px;
+      }
+
+      .pokedex-card {
+         background: rgba(255, 255, 255, 0.95);
+         padding: 40px;
+         border-radius: 20px;
+         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+         width: 100%;
+         max-width: 400px;
+         text-align: center;
+      }
+
+      /* La pantalla donde sale el Pokémon */
+      .pantalla {
+         background: #f0f0f0;
+         border: 4px solid #333;
+         border-radius: 10px;
+         padding: 20px;
+         margin-bottom: 20px;
+         min-height: 250px;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+      }
+
+      .pantalla img {
+         max-width: 150px;
+         /* Ocultamos la imagen hasta que cargue algo */
+         display: none; 
+      }
+
+      .pantalla h2 {
+         margin: 10px 0 0 0;
+         text-transform: capitalize; /* Pone la primera letra en mayúscula */
+         color: #333;
+      }
+
+      input[type="text"] {
+         width: 100%;
+         padding: 12px;
+         border: 2px solid #ddd;
+         border-radius: 8px;
+         font-size: 1rem;
+         font-family: 'Poppins', sans-serif;
+         margin-bottom: 15px;
+         outline: none;
+         text-align: center;
+      }
+
+      input[type="text"]:focus {
+         border-color: #ff4b2b;
+      }
+
+      .botones {
+         display: flex;
+         gap: 10px;
+      }
+
+      button {
+         flex: 1;
+         padding: 12px;
+         border: none;
+         border-radius: 8px;
+         font-size: 1rem;
+         font-weight: 600;
+         cursor: pointer;
+         transition: all 0.2s;
+         font-family: 'Poppins', sans-serif;
+      }
+
+      #btnBuscar {
+         background: #333;
+         color: white;
+      }
+
+      #btnRandom {
+         background: #4CAF50;
+         color: white;
+      }
+
+      #btnShiny {
+         background: #ff416c;
+         color: white;
+      }
+
+      button:hover {
+         transform: translateY(-2px);
+         opacity: 0.9;
+      }
+   </style>
+</head>
+<body>
+
+   <div class="pokedex-card">
+      <div class="pantalla">
+         <img id="pokeImagen" src="" alt="Imagen del Pokémon">
+         <h2 id="pokeNombre">¿Quién es ese Pokémon?</h2>
+      </div>
+
+      <input type="text" id="nombrePokemon" placeholder="Ej: Pikachu, Charizard, 150...">
+      
+      <div class="botones">
+         <button id="btnBuscar">🔍 Buscar</button>
+         <button id="btnRandom">🎲 Aleatorio</button>
+         <button id="btnShiny">🌟Shiny</button>
+      </div>
+   </div>
+
+   <script>
+      // Creamos una función maestra que hace la petición a la API
+      // Le pasamos un "identificador" que puede ser un nombre o un número
+      function buscarEnPokeAPI(identificador) {
+         
+         // Ponemos "Buscando..." en la pantalla mientras esperamos a que internet responda
+         $("#pokeNombre").text("Buscando...");
+         
+         $.ajax({
+            url: `https://pokeapi.co/api/v2/pokemon/${identificador}`,
+            method: "GET", // ¡Usamos GET porque queremos pedir datos, no enviarlos!
+            dataType: "json"
+         }).done(function(respuesta) {
+            // ¡La API nos ha respondido bien! 
+            console.log("Datos recibidos:", respuesta);
+
+            // 1. Sacamos el nombre y la foto del inmenso JSON que nos devuelve
+            let nombre = respuesta.name;
+            let imagenOficial = respuesta.sprites.other['official-artwork'].front_default;
+
+            // 2. Inyectamos esos datos en nuestro HTML
+            $("#pokeNombre").text(nombre);
+            $("#pokeImagen").attr("src", imagenOficial).show(); // Ponemos el 'src' y mostramos la imagen
+
+         }).fail(function(error) {
+            // Si el usuario escribe algo que no existe (ej: "Digimon")
+            $("#pokeNombre").text("Pokémon no encontrado 😢");
+            $("#pokeImagen").hide; // Ocultamos la imagen rota
+         });
+      }
+
+      function buscarShiny(identificador) {
+         $("#pokeNombre").text("Buscando...");
+         
+         $.ajax({
+            url: `https://pokeapi.co/api/v2/pokemon/${identificador}`,
+            method: "GET", // ¡Usamos GET porque queremos pedir datos, no enviarlos!
+            dataType: "json"
+         }).done(function(respuesta) {
+            // ¡La API nos ha respondido bien! 
+            console.log("Datos recibidos:", respuesta);
+
+            // 1. Sacamos el nombre y la foto del inmenso JSON que nos devuelve
+            let nombre = respuesta.name;
+            let imagenOficial = respuesta.sprites.other['official-artwork'].front_shiny;
+
+            // 2. Inyectamos esos datos en nuestro HTML
+            $("#pokeNombre").text(nombre);
+            $("#pokeImagen").attr("src", imagenOficial).show(); // Ponemos el 'src' y mostramos la imagen
+
+         }).fail(function(error) {
+            // Si el usuario escribe algo que no existe (ej: "Digimon")
+            $("#pokeNombre").text("Pokémon no encontrado 😢");
+            $("#pokeImagen").hide(); // Ocultamos la imagen rota
+         });
+      }
+
+      $(document).ready(function() {
+         
+         // Evento 1: Botón de buscar
+         $("#btnBuscar").click(function() {
+            // Cogemos el valor, le quitamos los espacios (.trim) y lo pasamos a minúsculas (.toLowerCase)
+            let nombre = $("#nombrePokemon").val().trim().toLowerCase();
+            
+            if (nombre !== "") {
+               buscarEnPokeAPI(nombre);
+               $("#nombrePokemon").val(""); // Limpiamos la caja
+            } else {
+               alert("¡Escribe el nombre de un Pokémon primero!");
+            }
+         });
+
+         // Evento 2: Botón Aleatorio
+         $("#btnRandom").click(function() {
+            // Generamos un número aleatorio entre el 1 y el 1025 (total de Pokémon actuales aprox)
+            let numeroAleatorio = Math.floor(Math.random() * 1025) + 1;
+            
+            // Como la API acepta números en la URL, se lo pasamos directamente
+            buscarEnPokeAPI(numeroAleatorio);
+         });
+
+
+         $("#btnShiny").click(function() {
+            let nombre = $("#nombrePokemon").val().trim().toLowerCase();
+
+            if (nombre !== "") {
+               buscarShiny(nombre);
+               $("#nombrePokemon").val("");
+            } else {
+               let shinyAleatorio = Math.floor(Math.random() * 1025) + 1;
+               buscarShiny(shinyAleatorio)
+            }
+         })
+      });
+      /*
+      67
+      67
+      67
+      67
+      67
+      67
+      67
+      67
+      67
+      67
+      67
+      67
+      67
+      67
+      67
+      67
+      67
+      67
+      67*/
+   </script>
+</body>
+</html>
